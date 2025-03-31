@@ -20,27 +20,16 @@ void exibirTabuleiro(int tabuleiro[TAMANHO][TAMANHO]) {
     }
 }
 
-int podePosicionar(int tabuleiro[TAMANHO][TAMANHO], int linha, int coluna, int direcao) {
-    if (direcao == 0) { // Horizontal
-        if (coluna + TAM_NAVIO > TAMANHO) return 0;
-        for (int i = 0; i < TAM_NAVIO; i++) {
-            if (tabuleiro[linha][coluna + i] != 0) return 0;
-        }
-    } else { // Vertical
-        if (linha + TAM_NAVIO > TAMANHO) return 0;
-        for (int i = 0; i < TAM_NAVIO; i++) {
-            if (tabuleiro[linha + i][coluna] != 0) return 0;
-        }
-    }
-    return 1;
-}
-
 void posicionarNavio(int tabuleiro[TAMANHO][TAMANHO], int linha, int coluna, int direcao) {
     for (int i = 0; i < TAM_NAVIO; i++) {
         if (direcao == 0) {
-            tabuleiro[linha][coluna + i] = 3;
+            tabuleiro[linha][coluna + i] = 3; // Horizontal
+        } else if (direcao == 1) {
+            tabuleiro[linha + i][coluna] = 3; // Vertical
+        } else if (direcao == 2) {
+            tabuleiro[linha + i][coluna + i] = 3; // Diagonal principal
         } else {
-            tabuleiro[linha + i][coluna] = 3;
+            tabuleiro[linha + i][coluna - i] = 3; // Diagonal secundária
         }
     }
 }
@@ -49,19 +38,12 @@ int main() {
     int tabuleiro[TAMANHO][TAMANHO];
     inicializarTabuleiro(tabuleiro);
 
-    // Definição fixa das coordenadas dos navios
-    int linha1 = 2, coluna1 = 3, direcao1 = 0; // Horizontal
-    int linha2 = 5, coluna2 = 6, direcao2 = 1; // Vertical
-
-    // Validando e posicionando os navios
-    if (podePosicionar(tabuleiro, linha1, coluna1, direcao1)) {
-        posicionarNavio(tabuleiro, linha1, coluna1, direcao1);
-    }
-    if (podePosicionar(tabuleiro, linha2, coluna2, direcao2)) {
-        posicionarNavio(tabuleiro, linha2, coluna2, direcao2);
-    }
+    // Posicionar navios
+    posicionarNavio(tabuleiro, 2, 3, 0); // Horizontal
+    posicionarNavio(tabuleiro, 5, 6, 1); // Vertical
+    posicionarNavio(tabuleiro, 0, 0, 2); // Diagonal principal
+    posicionarNavio(tabuleiro, 0, 9, 3); // Diagonal secundária
     
-    // Exibir o tabuleiro
     exibirTabuleiro(tabuleiro);
     return 0;
 }
